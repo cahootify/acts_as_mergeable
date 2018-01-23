@@ -1,5 +1,10 @@
 require "bundler/setup"
+require 'active_record'
 require "acts_as_mergeable"
+ActiveRecord::Base.establish_connection adapter: "sqlite3", database: ":memory:"
+
+Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |f| require f }
+
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
