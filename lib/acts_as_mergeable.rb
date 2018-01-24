@@ -5,7 +5,6 @@ require 'acts_as_mergeable/version'
  # - require all here
  # - base logic here, making calls to each module as needed
  # - each module tested separately in their respective spec files
- # - start from the simplest: has_many.
 
  # Note:
  # - an account should not be merged until some random code has been confirmed by the main owner... or it's done by an admin
