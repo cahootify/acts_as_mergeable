@@ -1,6 +1,7 @@
-require "bundler/setup"
+require 'bundler/setup'
 require 'active_record'
-require "acts_as_mergeable"
+require 'factory_bot'
+require 'acts_as_mergeable'
 ActiveRecord::Base.establish_connection adapter: "sqlite3", database: ":memory:"
 
 Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |f| require f }
