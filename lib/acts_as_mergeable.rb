@@ -7,6 +7,9 @@ require 'acts_as_mergeable/version'
  # - each module tested separately in their respective spec files
  # - start from the simplest: has_many.
 
+ # Note:
+ # - an account should not be merged until some random code has been confirmed by the main owner... or it's done by an admin
+
 module ActsAsMergeable
   def merge(instance)
     # Hey! merge only objects of same class!
