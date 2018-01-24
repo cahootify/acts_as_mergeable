@@ -4,9 +4,8 @@ ActiveRecord::Schema.define do
   create_table :users, :force => true do |t|
     t.string :name
     t.integer :age
-    t.integer :god_id
     t.integer :spouse_id
-    t.integer :friend_id
+    t.integer :profile_id
     t.integer :club_id
     t.integer :age_group_id
     t.datetime :dob

@@ -5,6 +5,5 @@ module AssocReflections
     main.class
       .reflect_on_all_associations
       .select { |r| r.macro == rel && r.options[:through].nil? }
-      .map(&:name)
   end
 end
