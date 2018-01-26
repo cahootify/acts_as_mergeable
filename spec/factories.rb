@@ -2,7 +2,6 @@ FactoryBot.define do
   factory :user do
     name  "John"
     age   34
-    club
     age_group
   end
 

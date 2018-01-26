@@ -6,7 +6,7 @@ RSpec.describe AssocReflections do
   it 'responds with associations to given object by the given relationship' do
     expect(AssocReflections.reflections_for(user, :has_many).map(&:name)).to eq([:houses, :cars, :shoes])
     expect(AssocReflections.reflections_for(user, :has_one).map(&:name)).to eq([:spouse, :profile])
-    expect(AssocReflections.reflections_for(user, :belongs_to).map(&:name)).to eq([:club, :age_group])
+    expect(AssocReflections.reflections_for(user, :belongs_to).map(&:name)).to eq([:age_group])
   end
 
   it "doesn't include 'through' relationships" do

@@ -6,7 +6,6 @@ ActiveRecord::Schema.define do
     t.integer :age
     t.integer :spouse_id
     t.integer :profile_id
-    t.integer :club_id
     t.integer :age_group_id
     t.datetime :dob
 
@@ -24,6 +23,11 @@ ActiveRecord::Schema.define do
 
   create_table :clubs, :force => true do |t|
     t.string :name
+  end
+
+  create_table :clubs_users, :force => true do |t|
+    t.integer :user_id
+    t.integer :club_id
   end
 
   create_table :houses, :force => true do |t|

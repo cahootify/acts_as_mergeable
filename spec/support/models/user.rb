@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_one :spouse, class_name: 'User', foreign_key: :spouse_id
   has_one :profile
 
-  belongs_to :club
+  has_and_belongs_to_many :clubs
+
   belongs_to :age_group
 end
