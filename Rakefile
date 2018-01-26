@@ -10,6 +10,7 @@ desc "Open an irb session preloaded with this library"
 task :console do
   require 'irb'
   require 'irb/completion'
+  require 'active_record'
   require 'acts_as_mergeable'
 
   # give access to the "reload!" function in the console... to reload.. :)

@@ -1,8 +1,5 @@
 # ActsAsMergeable
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/acts_as_mergeable`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Merge two `ActiveRecord` instances of the same class, with preference to the main instance on which the `merge` method is called on.
 
 ## Installation
 
@@ -22,14 +19,39 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Adding `acts_as_mergeable` to your `ActiveRecord` class gives instances of the class access to a `merge` method, which can be used to merge in another instance of the same class by accepting the second instance as an argument.
+
+E.g: Given an `ActiveRecord` `User` class
+
+```ruby
+class User < ActiveRecord::Base
+	acts_as_mergeable
+end
+```
+If `active_user` and `inactive_user` are two instances of the `User` class, attributes and associations of `inactive_user` can be merged into `active_user` by calling `active_user.merge(inactive_user)`
+
+#####NOTE: Preference is always given to properties of the main/parent instance.
+```ruby
+	> active_user = User.create(name: 'John Doe', email: 'john@doe.com')
+	> inactive_user = User.create(name: '', email: 'previous.john@doe.com', alias: 'jon D doe')
+	
+	# merge inactive_user into active_user
+	> active_user.merge(inactive_user)
+	
+	# active user now has attributes (and associated relationships) of the inactive user
+	> active_user.name
+	  => 'John Doe'
+	> active_user.email
+	  => 'john@doe.com'
+	> active_user.alias
+	  => 'jon D doe'
+```
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rspec` to run the tests. You can also run `rake console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
+To install this gem onto your local machine, run `bundle exec rake install`.
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/acts_as_mergeable. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.

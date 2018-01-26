@@ -1,14 +1,5 @@
 require 'acts_as_mergeable/version'
 
- # PLAN:
- # - have each association as a module with logic for each in their separate module
- # - require all here
- # - base logic here, making calls to each module as needed
- # - each module tested separately in their respective spec files
-
- # Note:
- # - an account should not be merged until some random code has been confirmed by the main owner... or it's done by an admin
-
 module ActsAsMergeable
   module Base
     def self.included(base)
