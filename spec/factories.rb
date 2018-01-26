@@ -26,7 +26,6 @@ FactoryBot.define do
   end
 
   factory :profile do
-    email "grant@murazik.co"
     user
   end
 

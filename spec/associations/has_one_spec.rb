@@ -17,6 +17,7 @@ RSpec.describe HasOne do
       other_profile.update(user: other_user)
       other_profile.update(county: county)
       other_profile.clubs << clubs
+      other_profile.update(bio: 'Simply put, the other guy.')
 
       HasOne.merge(main_user, other_user)
     end
@@ -30,6 +31,9 @@ RSpec.describe HasOne do
       expect(main_profile.reload.book).to eq book
       expect(main_profile.reload.emails).to include(*emails)
       expect(main_profile.reload.clubs).to include(*clubs)
+
+      # should also copy attributes
+      expect(main_profile.reload.bio).to eq('Simply put, the other guy.')
     end
   end
 

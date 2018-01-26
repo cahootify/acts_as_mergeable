@@ -36,7 +36,7 @@ ActiveRecord::Schema.define do
   end
 
   create_table :profiles, force: true do |t|
-    t.string :email
+    t.string :bio
     t.integer :user_id
     t.integer :county_id
   end

@@ -25,4 +25,23 @@ RSpec.describe ActsAsMergeable do
 
     expect{ main_user.merge(book) }.to raise_error('YEET!!!')
   end
+
+  it 'should copy attributes from child instance if not already present' do
+    main_user.name = 'Main Name'
+    main_user.age = 57
+    main_user.dob = nil
+
+    other_user.name = 'Other Name'
+    other_user.age = nil
+    other_user.dob = '1997-01-26'
+
+    main_user.merge(other_user)
+
+    # name shouldn't change since it was already present
+    expect(main_user.name).to eq 'Main Name'
+    # age shouldn't change either
+    expect(main_user.age).to eq 57
+    # dob should have been copied from other user, as main_user previously has no dob.
+    expect(main_user.reload.dob).to eq '1997-01-26'
+  end
 end

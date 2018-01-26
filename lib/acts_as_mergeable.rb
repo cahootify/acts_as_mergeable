@@ -14,20 +14,29 @@ module ActsAsMergeable
   end
 
   module InstanceMethods
-    def merge(instance)
-      # Hey! merge only objects of same class!
-      raise 'YEET!!!' unless instance.instance_of?(self.class)
+    MERGEABLE_ASSOCIATIONS = %w(HasMany HasOne BelongsTo HasAndBelongsToMany).freeze
 
-      transaction do
-        mergeable_associations.each { |assoc| Object.const_get(assoc).send(:merge, self, instance) }
+    def merge(instance, options={})
+      main = options[:main] || self
+      # Hey! merge only objects of same class!
+      raise 'YEET!!!' unless instance.instance_of?(main.class)
+
+      ActiveRecord::Base.transaction do
+        # merge in associations
+        MERGEABLE_ASSOCIATIONS.each { |assoc| Object.const_get(assoc).send(:merge, main, instance) }
+
+        # and merge in attributes
+        main.attributes.each do |field, val|
+          main.send("#{field}=", instance.send(field)) unless val.present?
+        end
+
+        # IMPORTANT! not to forget to persist changes to db
+        main.save!
       end
     end
 
-    private
-
-    def mergeable_associations
-      %w(HasMany HasOne BelongsTo HasAndBelongsToMany).freeze
-    end
+    module_function :merge
+    public :merge
   end
 end
 
