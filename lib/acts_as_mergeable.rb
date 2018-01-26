@@ -10,18 +10,35 @@ require 'acts_as_mergeable/version'
  # - an account should not be merged until some random code has been confirmed by the main owner... or it's done by an admin
 
 module ActsAsMergeable
-  def merge(instance)
-    # Hey! merge only objects of same class!
-    raise 'STUPID ERROR!!!' unless self.class == instance.class
+  module Base
+    def self.included(base)
+      base.extend ClassMethods
+    end
 
-    transaction do
-      mergeable_associations.each { |assoc| Object.const_get(assoc).send(:merge, self, instance) }
+    module ClassMethods
+      def acts_as_mergeable
+        include ActsAsMergeable::InstanceMethods
+      end
     end
   end
 
-  private
+  module InstanceMethods
+    def merge(instance)
+      # Hey! merge only objects of same class!
+      raise 'YEET!!!' unless instance.instance_of?(self.class)
 
-  def mergeable_associations
-    %w(HasMany HasOne BelongsTo HasAndBelongsToMany).freeze
+      transaction do
+        mergeable_associations.each { |assoc| Object.const_get(assoc).send(:merge, self, instance) }
+      end
+    end
+
+    private
+
+    def mergeable_associations
+      %w(HasMany HasOne BelongsTo HasAndBelongsToMany).freeze
+    end
   end
 end
+
+# creating a method that could be call on any class to provide access to this...
+ActiveRecord::Base.class_eval { include ActsAsMergeable::Base }

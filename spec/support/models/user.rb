@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+
+  acts_as_mergeable
+
   has_many :houses
   has_many :cars
   has_many :shoes
