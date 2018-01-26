@@ -39,4 +39,17 @@ FactoryBot.define do
     brand "Volley"
     user
   end
+
+  factory :email do
+    profile
+    email "my.email@example.test"
+  end
+
+  factory :book do
+    profile
+  end
+
+  factory :county do
+    name "Hampshire"
+  end
 end

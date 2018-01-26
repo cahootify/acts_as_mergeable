@@ -22,6 +22,6 @@ module ActsAsMergeable
   private
 
   def mergeable_associations
-    %w(HasMany HasOne BelongsTo HasAndBelongsTomany).freeze
+    %w(HasMany HasOne BelongsTo HasAndBelongsToMany).freeze
   end
 end
