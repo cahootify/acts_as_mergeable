@@ -5,20 +5,15 @@ module HasOne
   extend AssocReflections
   extend self
 
-  attr_reader :instance, :main
-
   def merge(main, instance)
-    @main = main
-    @instance = instance
-
     reflections_for(main, :has_one).each do |assoc|
-      effect_relationships_for_(assoc)
+      effect_relationships_for_(main, instance, assoc)
     end
   end
 
   private
 
-  def effect_relationships_for_(assoc)
+  def effect_relationships_for_(main, instance, assoc)
     main_assoc = main.send(assoc.name)
     related = instance.send(assoc.name)
 
