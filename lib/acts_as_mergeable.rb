@@ -1,4 +1,8 @@
 require 'acts_as_mergeable/version'
+require 'acts_as_mergeable/associations/has_many'
+require 'acts_as_mergeable/associations/has_one'
+require 'acts_as_mergeable/associations/has_and_belongs_to_many'
+require 'acts_as_mergeable/associations/belongs_to'
 
 module ActsAsMergeable
   module Base
