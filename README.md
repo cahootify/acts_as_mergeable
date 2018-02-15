@@ -47,6 +47,22 @@ If `active_user` and `inactive_user` are two instances of the `User` class, attr
 	  => 'jon D doe'
 ```
 
+An optional `destroy: true` can be passed to the call to `merge`. Setting this will ensure the destroyal of the `merged` instance.
+
+ ```ruby
+  > main_account = User.create(name: 'John Doe')
+  > other_account = User.create(name: 'Other User')
+  
+  # merge other_account into main_account, specifying "destroy: true"
+  > main_account.merge(other_account, {destroy: true})
+  
+  # Looking for the "other_account" record yields nothing as it has been deleted
+  > User.find_by_id(other_account.id)
+    => nil
+  > User.find_by_id(main_account.id)
+  	=> #<User id: 1, name: 'John Doe', ...>
+ ```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rspec` to run the tests. You can also run `rake console` for an interactive prompt that will allow you to experiment.

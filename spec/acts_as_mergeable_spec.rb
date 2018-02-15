@@ -1,6 +1,6 @@
 RSpec.describe ActsAsMergeable do
-  let(:main_user) { create(:user) }
-  let(:other_user) { create(:user) }
+  let!(:main_user) { create(:user) }
+  let!(:other_user) { create(:user) }
 
   it "has a version number" do
     expect(ActsAsMergeable::VERSION).not_to be nil
@@ -38,5 +38,14 @@ RSpec.describe ActsAsMergeable do
     expect(main_user.age).to eq 57
     # dob should have been copied from other user, as main_user previously has no dob.
     expect(main_user.reload.dob).to eq '1997-01-26'
+  end
+
+  it 'should delete the merged instance if option specified' do
+    expect{ main_user.merge(other_user, {destroy: true}) }.to change(User, :count).by -1
+    expect(User.find_by_id(other_user.id)).to be_nil
+  end
+
+  it 'should not delete the merged instance if destroy option is not exclusively set to true' do
+    expect{ main_user.merge(other_user, {destroy: 'true'}) }.not_to change(User, :count)
   end
 end

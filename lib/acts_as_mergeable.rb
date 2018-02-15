@@ -36,6 +36,9 @@ module ActsAsMergeable
 
         # IMPORTANT! not to forget to persist changes to db
         main.save!
+
+        # delete the instance, if specified
+        instance.destroy if options[:destroy] == true
       end
     end
 
