@@ -27,7 +27,7 @@ module HasOne
     elsif main_assoc && (main_assoc != related)
       # in the case main object already belongs to one other instance(which is not same as that of merging instance)
       # we should ensure to do a clone deep into the associations of the instances our other guy belonges to.
-      ActsAsMergeable::InstanceMethods.merge(related, main: main_assoc)
+      ActsAsMergeable::InstanceMethods.merge(related, { main: main_assoc, destroy: true })
     end
   end
 end
