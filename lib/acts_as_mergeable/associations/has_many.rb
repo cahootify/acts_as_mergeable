@@ -43,7 +43,7 @@ module HasMany
 
   def filter_based_on_scoped_uniquenesss(related, main, assoc)
     scoped_uniq_validators = assoc.klass.validators.select do |v|
-      v.instance_of?(ActiveRecord::Validations::UniquenessValidator) && the_name(v, assoc.inverse_of&.name, assoc.foreign_key.to_sym)
+      v.instance_of?(ActiveRecord::Validations::UniquenessValidator) && in_attr_or_scope(v, assoc.inverse_of&.name, assoc.foreign_key.to_sym)
     end
 
     scoped_uniq_validators.each do |suv|
@@ -57,7 +57,7 @@ module HasMany
     return related
   end
 
-  def the_name(validator, rel, attr)
+  def in_attr_or_scope(validator, rel, attr)
     [rel, attr].any? { |v|  validator.attributes.include?(v) || validator.options[:scope] == v }
   end
 end
