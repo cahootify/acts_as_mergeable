@@ -20,6 +20,8 @@ module HasMany
     related = instance.send(assoc.name)
     foreign_key = assoc.foreign_key
 
+    related = filter_based_on_scoped_uniquenesss(related, main, assoc)
+
     # checking for any max length validation on main
     # we don't want to go over defined threasholds
     max_length = max_length_allowed_for_(main, assoc.name)
@@ -37,5 +39,25 @@ module HasMany
     end
     max_lengths = length_validators.map { |v| v.options[:maximum] }
     max_lengths.min
+  end
+
+  def filter_based_on_scoped_uniquenesss(related, main, assoc)
+    scoped_uniq_validators = assoc.klass.validators.select do |v|
+      v.instance_of?(ActiveRecord::Validations::UniquenessValidator) && the_name(v, assoc.inverse_of&.name, assoc.foreign_key.to_sym)
+    end
+
+    scoped_uniq_validators.each do |suv|
+      uniq_key = [suv.attributes, suv.options[:scope]].flatten.find{|a| a != assoc.foreign_key.to_sym}
+
+      existing_values = main.send(assoc.name).map{|m| m.send(uniq_key)}
+
+      related = related.where.not(uniq_key => existing_values)
+    end
+
+    return related
+  end
+
+  def the_name(validator, rel, attr)
+    [rel, attr].any? { |v|  validator.attributes.include?(v) || validator.options[:scope] == v }
   end
 end
