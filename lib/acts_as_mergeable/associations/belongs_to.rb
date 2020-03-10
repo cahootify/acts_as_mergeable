@@ -20,7 +20,7 @@ module BelongsTo
     if main.send(assoc.name).nil?
       related = instance.send(assoc.name)
       foreign_key = assoc.foreign_key
-      main.update(foreign_key.to_sym => related.id)
+      main.update(foreign_key.to_sym => related.id) unless related.nil?
     end
   end
 end
